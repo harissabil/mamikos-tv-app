@@ -6,11 +6,24 @@ details (poster, summary, genres, season/episode counts, cast) and share it.
 
 **Walkthrough video:** <link>
 
-## Screenshots
-
-| List | Detail | Loading | Error |
-|------|--------|---------|-------|
-| _(screenshot)_ | _(screenshot)_ | _(screenshot)_ | _(screenshot)_ |
+<table>
+  <thead>
+    <tr>
+      <th width="25%">List</th>
+      <th width="25%">Detail</th>
+      <th width="25%">Loading</th>
+      <th width="25%">Error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://github.com/user-attachments/assets/1f6dfb96-d2e7-4fb5-8c15-e6b769433cc6" width="100%" /></td>
+      <td><img src="https://github.com/user-attachments/assets/35ba0ac6-f8a7-4286-9bfc-986aa35f8ed4" width="100%" /></td>
+      <td><img src="https://github.com/user-attachments/assets/fd909451-3586-40c1-8af8-8fbdae2e38a5" width="100%" /></td>
+      <td><img src="https://github.com/user-attachments/assets/0f5a7c54-8315-4bd4-974e-581cc6dff478" width="100%" /></td>
+    </tr>
+  </tbody>
+</table>
 
 ## How to run
 
