@@ -29,7 +29,7 @@ No mocking library. Test doubles are handwritten fakes that implement the real i
 ## Architecture
 
 Clean architecture, three layers in one app module: `domain`, `data`, `presentation`, plus a small
-`core` and `di`.
+`di`.
 
 - `domain` must not import anything from Android, Retrofit, Paging internals, or the `data` package.
   The dependency arrow always points inward toward domain.
