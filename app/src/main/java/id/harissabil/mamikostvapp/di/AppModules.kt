@@ -6,11 +6,15 @@ import id.harissabil.mamikostvapp.data.repository.ShowRepositoryImpl
 import id.harissabil.mamikostvapp.domain.repository.ShowRepository
 import id.harissabil.mamikostvapp.domain.usecase.GetShowDetailUseCase
 import id.harissabil.mamikostvapp.domain.usecase.GetShowsUseCase
+import id.harissabil.mamikostvapp.presentation.navigation.ShowDetailRoute
+import id.harissabil.mamikostvapp.presentation.screen.showdetail.ShowDetailViewModel
+import id.harissabil.mamikostvapp.presentation.screen.showlist.ShowListViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -62,4 +66,9 @@ val domainModule = module {
     factoryOf(::GetShowDetailUseCase)
 }
 
-val appModules = listOf(networkModule, dataModule, domainModule)
+val presentationModule = module {
+    viewModel { ShowListViewModel(get()) }
+    viewModel { (route: ShowDetailRoute) -> ShowDetailViewModel(route, get()) }
+}
+
+val appModules = listOf(networkModule, dataModule, domainModule, presentationModule)
