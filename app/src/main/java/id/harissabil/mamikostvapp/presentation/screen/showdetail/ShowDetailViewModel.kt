@@ -5,36 +5,46 @@ import androidx.lifecycle.viewModelScope
 import id.harissabil.mamikostvapp.domain.usecase.GetShowDetailUseCase
 import id.harissabil.mamikostvapp.presentation.common.toUserMessage
 import id.harissabil.mamikostvapp.presentation.navigation.ShowDetailRoute
-import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ShowDetailViewModel(
     private val route: ShowDetailRoute,
     private val getShowDetail: GetShowDetailUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ShowDetailUiState>(ShowDetailUiState.Loading)
-    val state: StateFlow<ShowDetailUiState> = _state.asStateFlow()
+    private val retries = MutableStateFlow(0)
 
-    init {
-        load()
+    val state: StateFlow<ShowDetailUiState> = retries
+        .flatMapLatest { showDetailStream() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+            initialValue = ShowDetailUiState.Loading,
+        )
+
+    fun retry() {
+        retries.update { it + 1 }
     }
 
-    fun retry() = load()
-
-    private fun load() {
-        _state.value = ShowDetailUiState.Loading
-        viewModelScope.launch {
-            _state.value = try {
-                ShowDetailUiState.Success(getShowDetail(route.showId))
-            } catch (cancellation: CancellationException) {
-                throw cancellation
-            } catch (failure: Exception) {
-                ShowDetailUiState.Error(failure.toUserMessage())
-            }
+    private fun showDetailStream(): Flow<ShowDetailUiState> =
+        flow<ShowDetailUiState> {
+            emit(ShowDetailUiState.Success(getShowDetail(route.showId)))
         }
+            .onStart { emit(ShowDetailUiState.Loading) }
+            .catch { throwable -> emit(ShowDetailUiState.Error(throwable.toUserMessage())) }
+
+    private companion object {
+        const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }
