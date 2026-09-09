@@ -33,6 +33,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -56,15 +57,20 @@ dependencies {
     // Paging
     implementation(libs.androidx.paging.common)
 
-    // Retrofit
+    // Retrofit + OkHttp
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx.serialization)
+    implementation(libs.okhttp.logging.interceptor)
 
     // kotlinx.serialization
     implementation(libs.kotlinx.serialization.json)
 
     // Jsoup
     implementation(libs.jsoup)
+
+    // Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
 
     // Unit tests
     testImplementation(libs.junit)
