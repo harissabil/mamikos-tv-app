@@ -4,7 +4,9 @@ A simple two-screen TV show browser built with Jetpack Compose, backed by the
 [TVMaze API](https://api.tvmaze.com). Browse a paged grid of shows, tap one to see its
 details (poster, summary, genres, season/episode counts, cast) and share it.
 
-**Walkthrough video:** <link>
+**Walkthrough video:** [YouTube](https://youtu.be/EDWb9TSdJDM)
+
+## Screenshots
 
 <table>
   <thead>
@@ -28,8 +30,8 @@ details (poster, summary, genres, season/episode counts, cast) and share it.
 ## How to run
 
 ```bash
-git clone <repo-url>
-cd tv-app
+git clone https://github.com/harissabil/mamikos-tv-app.git
+cd mamikos-tv-app
 ./gradlew installDebug
 ```
 
